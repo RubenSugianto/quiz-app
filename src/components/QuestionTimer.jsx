@@ -9,15 +9,25 @@ export default function QuestionTimer({ timeout, onTimeout}) {
     // nah beda beda, makanya di app harus dipasangin useCallback function untuk handleSelectAnswer
     useEffect(() => {
         console.log('SETTING TIMEOUT');
-        setTimeout(onTimeout, timeout);
+        const timer = setTimeout(onTimeout, timeout);
+
+        // memastikan timer selesai ketika quiz selesai
+        return () => {
+            clearTimeout(timer);
+        };
     }, [timeout, onTimeout]);
 
     // setInterval ada perubahan state dan akan menyebabkan infinite loop, makanya dipakai useEffect
     useEffect(() => {
         console.log('SETTING INTERVAL');
-        setInterval(() => {
+        const interval = setInterval(() => {
             setRemainingTime((prevRemainingTime) => prevRemainingTime - 100);
         }, 100);
+        
+        // Clean Up Function untuk meamstikan interval berubah ketika diexecute lagi
+        return () => {
+            clearInterval(interval);
+        };
     }, []);
 
     return <progress id="question-time" max={timeout} value={remainingTime}/>

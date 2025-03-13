@@ -46,6 +46,9 @@ export default function Quiz() {
         <div id="quiz">
             <div id="question">
                 <QuestionTimer
+                    // kalo key bukan di list, dia bakal destroy old component
+                    // lalu dia akan buat yang baru
+                    key={activeQuestionIndex}
                     timeout={10000}
                     onTimeout={handleSkipAnswer}
                 />
